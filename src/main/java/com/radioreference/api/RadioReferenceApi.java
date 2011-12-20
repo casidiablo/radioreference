@@ -1,52 +1,47 @@
 package com.radioreference.api;
 
+import com.radioreference.model.Country;
+import com.radioreference.model.County;
+import com.radioreference.model.Feed;
+import com.radioreference.model.State;
+
+import java.util.List;
+
 public interface RadioReferenceApi {
     /**
-     * @return all feeds
-     */
-    public String getFeeds();
-
-    /**
      * @param filter used to determine what feeds should be fetched
-     * @return all feeds that matches the specified filter
+     * @return all feeds that matches the specified filter. If filter is null, returns all feeds.
      */
-    public String getFeeds(FeedsFilter filter);
+    public List<Feed> getFeeds(FeedsFilter filter);
 
     /**
      * @return all countries that have audio feeds
      */
-    public String getCountries();
+    public List<Country> getCountries();
 
     /**
      * @param countryId country ID
      * @return all states in a country, specified with parameter "coid", that have
      *         audio feeds
      */
-    public String getStates(long countryId);
+    public List<State> getStates(long countryId);
 
     /**
      * @param stateId the id of the state of the counties to fetch
      * @return all counties (or equivalent entity) in a state, specified with
      *         parameter "stateId", that have audio feeds
      */
-    public String getCounties(long stateId);
+    public List<County> getCounties(long stateId);
 
     /**
      * @param countyId the id of the county to fetch
      * @return all audio feeds present in a county
      */
-    public String getCounty(long countyId);
+    public County getCounty(long countyId);
 
     /**
      * @param feedId individual Feed ID
      * @return details on an individual feed
      */
-    public String getFeed(long feedId);
-
-    /**
-     * @param feedId individual Feed ID
-     * @return all dates that a feed has archives available / or links to all
-     *         archives for a specific date
-     */
-    public String getArchives(long feedId);
+    public Feed getFeed(long feedId);
 }

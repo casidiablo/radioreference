@@ -26,7 +26,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     public List<Feed> getFeeds(FeedsFilter filter) {
         // prepare request
-        HttpClient.Request request = getDefaultRequest();
+        Request request = getDefaultRequest();
         request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_FEEDS);
         //apply filters if necessary
         if (filter != null) {
@@ -46,13 +46,20 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         // execute request
         InputStream inputStream = executeRequest(request);
         // parse response
-        FeedsResponse feedsResponse = XmlHelper.fromXml(FeedsResponse.class, inputStream);
+        Response.Feeds feedsResponse = XmlHelper.fromXml(Response.Feeds.class, inputStream);
         return feedsResponse.getFeeds();
     }
 
     @Override
     public List<Country> getCountries() {
-        return null;
+        // prepare request
+        Request request = getDefaultRequest();
+        request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_COUNTRIES);
+        // execute request
+        InputStream inputStream = executeRequest(request);
+        // parse response
+        Response.Countries countriesResponse = XmlHelper.fromXml(Response.Countries.class, inputStream);
+        return countriesResponse.getCountries();
     }
 
     @Override
@@ -75,7 +82,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         return null;
     }
 
-    private InputStream executeRequest(HttpClient.Request request) {
+    private InputStream executeRequest(Request request) {
         try {
             return mExecutor.execute(request);
         } catch (Exception e) {
@@ -83,8 +90,8 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         }
     }
 
-    private HttpClient.Request getDefaultRequest() {
-        HttpClient.Request request = new HttpClient.Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
+    private Request getDefaultRequest() {
+        Request request = new Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
         request.addParameter(Constants.PARAM_KEY, String.valueOf(mKey));
         request.addParameter(Constants.PARAM_TYPE, mType.name().toLowerCase());
         return request;

@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class TestFeeds extends XmlTester {
+public class TestFeeds extends TestBase {
     @Test
     public void testFeeds() {
         List<Feed> feeds = mApi.getFeeds(null);

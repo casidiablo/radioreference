@@ -2,7 +2,7 @@ package com.radioreference.api;
 
 import org.junit.Before;
 
-public class XmlTester {
+public class TestBase {
 
     protected RadioReferenceApi mApi;
 

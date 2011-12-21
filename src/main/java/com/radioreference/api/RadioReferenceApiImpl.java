@@ -10,13 +10,11 @@ import java.util.List;
 
 class RadioReferenceApiImpl implements RadioReferenceApi {
 
-    private final Type mType;
     private final HttpClient mExecutor;
     private final long mKey;
 
-    public RadioReferenceApiImpl(long key, Type type) {
+    RadioReferenceApiImpl(long key) {
         mKey = key;
-        mType = type;
         mExecutor = HttpClient.getInstance();
     }
 
@@ -95,12 +93,8 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     private Request getDefaultRequest(String action) {
         Request request = new Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
         request.addParameter(Constants.PARAM_KEY, String.valueOf(mKey));
-        request.addParameter(Constants.PARAM_TYPE, mType.name().toLowerCase());
+        request.addParameter(Constants.PARAM_TYPE, Constants.DEFAULT_TYPE);
         request.addParameter(Constants.PARAM_ACTION, action);
         return request;
-    }
-
-    public enum Type {
-        XML, JSON
     }
 }

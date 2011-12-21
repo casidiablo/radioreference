@@ -10,10 +10,6 @@ import java.util.List;
 
 class RadioReferenceApiImpl implements RadioReferenceApi {
 
-    public enum Type {
-        XML, JSON
-    }
-
     private final Type mType;
     private final HttpClient mExecutor;
     private final long mKey;
@@ -77,8 +73,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         // prepare request, execute request and parse response
         Request request = getDefaultRequest(Constants.ACTION_COUNTY);
         request.addParameter(Constants.PARAM_COUNTY_ID, String.valueOf(countyId));
-        County county = XmlHelper.fromXml(County.class, executeRequest(request));
-        return county;
+        return XmlHelper.fromXml(County.class, executeRequest(request));
     }
 
     @Override
@@ -86,8 +81,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         // prepare request, execute request and parse response
         Request request = getDefaultRequest(Constants.ACTION_FEED);
         request.addParameter(Constants.PARAM_FEED_ID, String.valueOf(feedId));
-        Feed feed = XmlHelper.fromXml(Feed.class, executeRequest(request));
-        return feed;
+        return XmlHelper.fromXml(Feed.class, executeRequest(request));
     }
 
     private InputStream executeRequest(Request request) {
@@ -104,5 +98,9 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         request.addParameter(Constants.PARAM_TYPE, mType.name().toLowerCase());
         request.addParameter(Constants.PARAM_ACTION, action);
         return request;
+    }
+
+    public enum Type {
+        XML, JSON
     }
 }

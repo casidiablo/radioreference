@@ -41,14 +41,4 @@ class XmlHelper {
         return null;
     }
 
-    public static <T> T fromXml(Class<? extends T> clazz, String xml) {
-        try {
-            Object result = SERIALIZER.read(clazz, xml, false);
-            return (T) result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

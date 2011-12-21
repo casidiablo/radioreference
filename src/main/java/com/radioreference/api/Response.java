@@ -2,6 +2,7 @@ package com.radioreference.api;
 
 import com.radioreference.model.Country;
 import com.radioreference.model.Feed;
+import com.radioreference.model.State;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -35,6 +36,21 @@ class Response {
         @Override
         public String toString() {
             return "{countries=" + countries + '}';
+        }
+    }
+
+    @Root
+    static class States {
+        @ElementList(inline = true, required = true, entry = "state", type = State.class)
+        private List<State> states;
+
+        public List<State> getStates() {
+            return states;
+        }
+
+        @Override
+        public String toString() {
+            return "{states=" + states + '}';
         }
     }
 }

@@ -8,9 +8,9 @@ public class State {
     @Attribute(name = "id")
     private long id;
     @Attribute(name = "name")
-    private long name;
+    private String name;
     @Attribute(name = "code")
-    private long code;
+    private String code;
 
     public long getId() {
         return id;
@@ -20,19 +20,19 @@ public class State {
         this.id = id;
     }
 
-    public long getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(long name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -43,9 +43,9 @@ public class State {
 
         State state = (State) o;
 
-        if (code != state.code) return false;
         if (id != state.id) return false;
-        if (name != state.name) return false;
+        if (code != null ? !code.equals(state.code) : state.code != null) return false;
+        if (name != null ? !name.equals(state.name) : state.name != null) return false;
 
         return true;
     }
@@ -53,8 +53,8 @@ public class State {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (name ^ (name >>> 32));
-        result = 31 * result + (int) (code ^ (code >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
     }
 

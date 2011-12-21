@@ -43,10 +43,8 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
                 request.addParameter(Constants.PARAM_TOP, String.valueOf(filter.getTop()));
             }
         }
-        // execute request
-        InputStream inputStream = executeRequest(request);
-        // parse response
-        Response.Feeds feedsResponse = XmlHelper.fromXml(Response.Feeds.class, inputStream);
+        // execute request and parse response
+        Response.Feeds feedsResponse = XmlHelper.fromXml(Response.Feeds.class, executeRequest(request));
         return feedsResponse.getFeeds();
     }
 
@@ -55,16 +53,20 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         // prepare request
         Request request = getDefaultRequest();
         request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_COUNTRIES);
-        // execute request
-        InputStream inputStream = executeRequest(request);
-        // parse response
-        Response.Countries countriesResponse = XmlHelper.fromXml(Response.Countries.class, inputStream);
+        // execute request and parse response
+        Response.Countries countriesResponse = XmlHelper.fromXml(Response.Countries.class, executeRequest(request));
         return countriesResponse.getCountries();
     }
 
     @Override
     public List<State> getStates(long countryId) {
-        return null;
+        // prepare request
+        Request request = getDefaultRequest();
+        request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_STATES);
+        request.addParameter(Constants.PARAM_COUNTRY_ID, String.valueOf(countryId));
+        // execute request and parse response
+        Response.States states = XmlHelper.fromXml(Response.States.class, executeRequest(request));
+        return states.getStates();
     }
 
     @Override

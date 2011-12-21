@@ -21,7 +21,7 @@ public class Feed {
     @Attribute(name = "mount")
     private String mount;
     @Attribute(name = "bitrate")
-    private String bitRate;
+    private int bitRate;
 
     @ElementList(name = "counties", inline = false, entry = "county", type = County.class, required = false)
     private List<County> counties;
@@ -76,11 +76,11 @@ public class Feed {
         this.mount = mount;
     }
 
-    public String getBitRate() {
+    public int getBitRate() {
         return bitRate;
     }
 
-    public void setBitRate(String bitRate) {
+    public void setBitRate(int bitRate) {
         this.bitRate = bitRate;
     }
 
@@ -107,10 +107,10 @@ public class Feed {
 
         Feed feed = (Feed) o;
 
+        if (bitRate != feed.bitRate) return false;
         if (id != feed.id) return false;
         if (listeners != feed.listeners) return false;
         if (status != feed.status) return false;
-        if (bitRate != null ? !bitRate.equals(feed.bitRate) : feed.bitRate != null) return false;
         if (counties != null ? !counties.equals(feed.counties) : feed.counties != null) return false;
         if (description != null ? !description.equals(feed.description) : feed.description != null) return false;
         if (genre != null ? !genre.equals(feed.genre) : feed.genre != null) return false;
@@ -128,7 +128,7 @@ public class Feed {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (genre != null ? genre.hashCode() : 0);
         result = 31 * result + (mount != null ? mount.hashCode() : 0);
-        result = 31 * result + (bitRate != null ? bitRate.hashCode() : 0);
+        result = 31 * result + bitRate;
         result = 31 * result + (counties != null ? counties.hashCode() : 0);
         result = 31 * result + (relays != null ? relays.hashCode() : 0);
         return result;

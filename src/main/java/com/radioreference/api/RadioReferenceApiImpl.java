@@ -83,7 +83,11 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     @Override
     public Feed getFeed(long feedId) {
-        return null;
+        // prepare request, execute request and parse response
+        Request request = getDefaultRequest(Constants.ACTION_FEED);
+        request.addParameter(Constants.PARAM_FEED_ID, String.valueOf(feedId));
+        Feed feed = XmlHelper.fromXml(Feed.class, executeRequest(request));
+        return feed;
     }
 
     private InputStream executeRequest(Request request) {

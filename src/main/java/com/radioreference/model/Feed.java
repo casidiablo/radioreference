@@ -23,7 +23,7 @@ public class Feed {
     @Attribute(name = "bitrate")
     private String bitRate;
 
-    @ElementList(name = "counties", inline = false, entry = "county", type = County.class)
+    @ElementList(name = "counties", inline = false, entry = "county", type = County.class, required = false)
     private List<County> counties;
     @ElementList(name = "relays", inline = false, entry = "relay", type = Relay.class)
     private List<Relay> relays;

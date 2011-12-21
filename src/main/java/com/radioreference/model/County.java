@@ -34,7 +34,7 @@ public class County {
     @Attribute(name = "lon", required = false)
     private String longitude;
 
-    @ElementList(name = "feeds", inline = false, entry = "feed", type = Feed.class, required = false)
+    @ElementList(name = "feeds", inline = true, entry = "feed", type = Feed.class, required = false)
     private List<Feed> feeds;
 
     public long getId() {

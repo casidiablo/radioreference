@@ -43,7 +43,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         }
         // execute request and parse response
         Response.Feeds feedsResponse = XmlHelper.fromXml(Response.Feeds.class, executeRequest(request));
-        return feedsResponse.getFeeds();
+        return feedsResponse == null ? null : feedsResponse.getFeeds();
     }
 
     @Override
@@ -51,7 +51,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         // prepare request, execute request and parse response
         Request request = getDefaultRequest(Constants.ACTION_COUNTRIES);
         Response.Countries countriesResponse = XmlHelper.fromXml(Response.Countries.class, executeRequest(request));
-        return countriesResponse.getCountries();
+        return countriesResponse == null ? null : countriesResponse.getCountries();
     }
 
     @Override
@@ -60,7 +60,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         Request request = getDefaultRequest(Constants.ACTION_STATES);
         request.addParameter(Constants.PARAM_COUNTRY_ID, String.valueOf(countryId));
         Response.States states = XmlHelper.fromXml(Response.States.class, executeRequest(request));
-        return states.getStates();
+        return states == null ? null : states.getStates();
     }
 
     @Override
@@ -69,12 +69,16 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         Request request = getDefaultRequest(Constants.ACTION_COUNTIES);
         request.addParameter(Constants.PARAM_STATE_ID, String.valueOf(stateId));
         Response.Counties counties = XmlHelper.fromXml(Response.Counties.class, executeRequest(request));
-        return counties.getCounties();
+        return counties == null ? null : counties.getCounties();
     }
 
     @Override
     public County getCounty(long countyId) {
-        return null;
+        // prepare request, execute request and parse response
+        Request request = getDefaultRequest(Constants.ACTION_COUNTY);
+        request.addParameter(Constants.PARAM_COUNTY_ID, String.valueOf(countyId));
+        County county = XmlHelper.fromXml(County.class, executeRequest(request));
+        return county;
     }
 
     @Override

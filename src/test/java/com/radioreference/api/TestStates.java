@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class TestStates extends TestBase {
@@ -12,6 +13,7 @@ public class TestStates extends TestBase {
     public void testStates() {
         List<State> states = mApi.getStates(1);
         assertNotNull(states);
+        assertFalse(states.isEmpty());
         for (State state : states) {
             assertNotNull(state);
             assertNotNull(state.getCode());

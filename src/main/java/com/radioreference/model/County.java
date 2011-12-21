@@ -1,32 +1,33 @@
 package com.radioreference.model;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import org.simpleframework.xml.*;
 
 import java.util.List;
 
 @Root
+@Default(value = DefaultType.FIELD, required = false)
 public class County {
-    @Attribute(name = "ctid")
-    private long id;
+    @Attribute(name = "id", required = false)
+    private long id;// this one is used when calling counties method
+    @Attribute(name = "ctid", required = false)
+    private long countyId;// this one is used when calling feeds method
     @Attribute(name = "name")
     private String name;
     @Attribute(name = "type")
     private String type;
-    @Attribute(name = "stid")
+    @Attribute(name = "stid", required = false)
     private long stateId;
-    @Attribute(name = "stateCode")
+    @Attribute(name = "stateCode", required = false)
     private String stateCode;
-    @Attribute(name = "stateName")
+    @Attribute(name = "stateName", required = false)
     private String stateName;
-    @Attribute(name = "countryName")
+    @Attribute(name = "countryName", required = false)
     private String countryName;
-    @Attribute(name = "countryCode")
+    @Attribute(name = "countryCode", required = false)
     private String countryCode;
-    @Attribute(name = "coid")
+    @Attribute(name = "coid", required = false)
     private long countryId;
-    @Attribute(name = "countyDetails")
+    @Attribute(name = "countyDetails", required = false)
     private String countyDetails;
     @Attribute(name = "lat", required = false)
     private String latitude;
@@ -42,6 +43,14 @@ public class County {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getCountyId() {
+        return countyId;
+    }
+
+    public void setCountyId(long countyId) {
+        this.countyId = countyId;
     }
 
     public String getName() {
@@ -148,6 +157,7 @@ public class County {
         County county = (County) o;
 
         if (countryId != county.countryId) return false;
+        if (countyId != county.countyId) return false;
         if (id != county.id) return false;
         if (stateId != county.stateId) return false;
         if (countryCode != null ? !countryCode.equals(county.countryCode) : county.countryCode != null) return false;
@@ -168,6 +178,7 @@ public class County {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (countyId ^ (countyId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (stateId ^ (stateId >>> 32));
@@ -187,6 +198,7 @@ public class County {
     public String toString() {
         return "County{" +
                 "id=" + id +
+                ", countyId=" + countyId +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", stateId=" + stateId +
@@ -196,8 +208,8 @@ public class County {
                 ", countryCode='" + countryCode + '\'' +
                 ", countryId=" + countryId +
                 ", countyDetails='" + countyDetails + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
                 ", feeds=" + feeds +
                 '}';
     }

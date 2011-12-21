@@ -25,10 +25,8 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     }
 
     public List<Feed> getFeeds(FeedsFilter filter) {
-        // prepare request
-        Request request = getDefaultRequest();
-        request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_FEEDS);
-        //apply filters if necessary
+        // prepare request (apply filters if necessary)
+        Request request = getDefaultRequest(Constants.ACTION_FEEDS);
         if (filter != null) {
             if (filter.getStateId() > 0) {
                 request.addParameter(Constants.PARAM_STATE_ID, String.valueOf(filter.getStateId()));
@@ -50,28 +48,28 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     @Override
     public List<Country> getCountries() {
-        // prepare request
-        Request request = getDefaultRequest();
-        request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_COUNTRIES);
-        // execute request and parse response
+        // prepare request, execute request and parse response
+        Request request = getDefaultRequest(Constants.ACTION_COUNTRIES);
         Response.Countries countriesResponse = XmlHelper.fromXml(Response.Countries.class, executeRequest(request));
         return countriesResponse.getCountries();
     }
 
     @Override
     public List<State> getStates(long countryId) {
-        // prepare request
-        Request request = getDefaultRequest();
-        request.addParameter(Constants.PARAM_ACTION, Constants.ACTION_STATES);
+        // prepare request, execute request and parse response
+        Request request = getDefaultRequest(Constants.ACTION_STATES);
         request.addParameter(Constants.PARAM_COUNTRY_ID, String.valueOf(countryId));
-        // execute request and parse response
         Response.States states = XmlHelper.fromXml(Response.States.class, executeRequest(request));
         return states.getStates();
     }
 
     @Override
     public List<County> getCounties(long stateId) {
-        return null;
+        // prepare request, execute request and parse response
+        Request request = getDefaultRequest(Constants.ACTION_COUNTIES);
+        request.addParameter(Constants.PARAM_STATE_ID, String.valueOf(stateId));
+        Response.Counties counties = XmlHelper.fromXml(Response.Counties.class, executeRequest(request));
+        return counties.getCounties();
     }
 
     @Override
@@ -92,10 +90,11 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
         }
     }
 
-    private Request getDefaultRequest() {
+    private Request getDefaultRequest(String action) {
         Request request = new Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
         request.addParameter(Constants.PARAM_KEY, String.valueOf(mKey));
         request.addParameter(Constants.PARAM_TYPE, mType.name().toLowerCase());
+        request.addParameter(Constants.PARAM_ACTION, action);
         return request;
     }
 }

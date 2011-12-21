@@ -14,4 +14,5 @@ class Constants {
     public static final String ACTION_FEEDS = "feeds";
     public static final String ACTION_COUNTRIES = "countries";
     public static final String ACTION_STATES = "states";
+    public static final String ACTION_COUNTIES = "counties";
 }

@@ -8,6 +8,6 @@ public class TestBase {
 
     @Before
     public void setup() {
-        mApi = new RadioReferenceApiImpl(65701177);
+        mApi = RadioReferenceApiFactory.getApi(65701177);
     }
 }

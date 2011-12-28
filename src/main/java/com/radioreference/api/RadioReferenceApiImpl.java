@@ -12,10 +12,12 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     private final HttpClient mExecutor;
     private final long mKey;
+    private final boolean mDebug;
 
-    RadioReferenceApiImpl(long key) {
+    RadioReferenceApiImpl(long key, boolean debug) {
         mKey = key;
         mExecutor = HttpClient.getInstance();
+        mDebug = debug;
     }
 
     public List<Feed> getFeeds(FeedsFilter filter) {
@@ -84,6 +86,9 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     private InputStream executeRequest(Request request) {
         try {
+            if (mDebug == true) {
+                System.out.println("Executing RadioReference API URL: " + request.getUrl());
+            }
             return mExecutor.execute(request);
         } catch (Exception e) {
             return null;

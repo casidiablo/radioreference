@@ -1,6 +1,7 @@
 package com.radioreference.model;
 
 import org.simpleframework.xml.*;
+import org.simpleframework.xml.core.Commit;
 
 import java.util.List;
 
@@ -147,6 +148,15 @@ public class County {
 
     public void setFeeds(List<Feed> feeds) {
         this.feeds = feeds;
+    }
+
+    @Commit
+    public void commit() {
+        if (id == 0 && countyId != 0) {
+            id = countyId;
+        } else if (id != 0 && countyId == 0) {
+            countyId = id;
+        }
     }
 
     @Override

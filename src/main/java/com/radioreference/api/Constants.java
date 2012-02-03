@@ -3,6 +3,7 @@ package com.radioreference.api;
 class Constants {
     static final String URL = "http://api.radioreference.com/";
     static final String DEFAULT_METHOD = "audio/";
+    static final String DEFAULT_TYPE = "xml";
 
     static final String PARAM_ACTION = "a";
     static final String PARAM_KEY = "key";

@@ -10,14 +10,14 @@ import java.util.List;
 
 class RadioReferenceApiImpl implements RadioReferenceApi {
 
-    private final Type mType;
     private final HttpClient mExecutor;
     private final long mKey;
+    private final boolean mDebug;
 
-    public RadioReferenceApiImpl(long key, Type type) {
+    RadioReferenceApiImpl(long key, boolean debug) {
         mKey = key;
-        mType = type;
         mExecutor = HttpClient.getInstance();
+        mDebug = debug;
     }
 
     public List<Feed> getFeeds(FeedsFilter filter) {
@@ -86,6 +86,9 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
 
     private InputStream executeRequest(Request request) {
         try {
+            if (mDebug == true) {
+                System.out.println("Executing RadioReference API URL: " + request.getUrl());
+            }
             return mExecutor.execute(request);
         } catch (Exception e) {
             return null;
@@ -95,12 +98,8 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     private Request getDefaultRequest(String action) {
         Request request = new Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
         request.addParameter(Constants.PARAM_KEY, String.valueOf(mKey));
-        request.addParameter(Constants.PARAM_TYPE, mType.name().toLowerCase());
+        request.addParameter(Constants.PARAM_TYPE, Constants.DEFAULT_TYPE);
         request.addParameter(Constants.PARAM_ACTION, action);
         return request;
-    }
-
-    public enum Type {
-        XML, JSON
     }
 }

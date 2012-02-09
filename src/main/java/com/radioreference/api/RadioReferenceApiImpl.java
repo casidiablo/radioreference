@@ -87,7 +87,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     private InputStream executeRequest(Request request) {
         try {
             if (mDebug == true) {
-                System.out.println("Executing RadioReference API URL: " + request.getUrl());
+                LoggerManager.log("Executing RadioReference API URL: " + request.getUrl());
             }
             return mExecutor.execute(request);
         } catch (Exception e) {

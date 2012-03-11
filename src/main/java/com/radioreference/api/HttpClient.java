@@ -3,20 +3,12 @@ package com.radioreference.api;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -42,43 +34,16 @@ class HttpClient {
      *
      * @return {@link #instance}
      */
-    public static HttpClient getInstance() {
+    static HttpClient getInstance() {
         if (instance == null) {
             instance = new HttpClient();
         }
         return instance;
     }
 
-    public InputStream execute(Request requestBean) throws IOException {
-        if (requestBean == null) {
-            throw new IllegalArgumentException("Invalid request!");
-        }
-
-        HttpUriRequest request = null;
-
-
+    InputStream execute(Request requestBean) throws IOException {
         String url = requestBean.getUrl();
-        RequestMethod method = requestBean.getMethod();
-
-        switch (method) {
-            case GET: {
-                request = new HttpGet(url);
-                break;
-            }
-            case POST: {
-                request = new HttpPost(url);
-                Map<String, String> params = requestBean.getParameters();
-                //Parameters may be null
-                if (params != null && !params.isEmpty()) {
-                    ((HttpPost) request).setEntity(mapToEntity(params));
-                }
-                break;
-            }
-            default:
-                break;
-        }
-
-        return executeRequest(request);
+        return executeRequest(new HttpGet(url));
     }
 
     /**
@@ -118,45 +83,4 @@ class HttpClient {
         }
         return null;
     }
-
-    /**
-     * Convert a Map to UrlEncodedFormEntity
-     *
-     * @param parameters A Map of key:value
-     * @return UrlEncodedFormEntity using UTF-8 encoding
-     * @throws java.io.UnsupportedEncodingException
-     *          if UTF-8 encoding is not supported
-     */
-    private static UrlEncodedFormEntity mapToEntity(Map<String, String> parameters)
-            throws UnsupportedEncodingException {
-        if (parameters == null) {
-            throw new IllegalArgumentException("Invalid parameters unable map to Entity");
-        }
-
-        if (parameters.isEmpty()) {
-            return null;
-        }
-
-        ArrayList<NameValuePair> parametersList = new ArrayList<NameValuePair>();
-
-        for (@SuppressWarnings("rawtypes") Map.Entry element : parameters.entrySet()) {
-            NameValuePair nameValuePair = new BasicNameValuePair((String) element.getKey(), (String) element.getValue());
-            parametersList.add(nameValuePair);
-        }
-
-        return new UrlEncodedFormEntity(parametersList, HTTP.UTF_8);
-    }
-
-    /**
-     * HTTP request methods
-     *
-     * @version 1.0
-     */
-    public static enum RequestMethod {
-        GET,
-        POST,
-        PUT,
-        DELETE
-    }
-
 }

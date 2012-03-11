@@ -87,7 +87,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     private InputStream executeRequest(Request request) {
         try {
             if (mDebug == true) {
-                LoggerManager.log("Executing RadioReference API URL: " + request.getUrl());
+                System.out.printf("Executing RadioReference API URL: %s%n", request.getUrl());
             }
             return mExecutor.execute(request);
         } catch (Exception e) {
@@ -96,7 +96,7 @@ class RadioReferenceApiImpl implements RadioReferenceApi {
     }
 
     private Request getDefaultRequest(String action) {
-        Request request = new Request(HttpClient.RequestMethod.GET, Constants.URL, Constants.DEFAULT_METHOD);
+        Request request = new Request(Constants.URL, Constants.DEFAULT_METHOD);
         request.addParameter(Constants.PARAM_KEY, String.valueOf(mKey));
         request.addParameter(Constants.PARAM_TYPE, Constants.DEFAULT_TYPE);
         request.addParameter(Constants.PARAM_ACTION, action);

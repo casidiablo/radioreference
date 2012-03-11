@@ -10,13 +10,9 @@ import java.util.Map;
  */
 class Request {
     /**
-     * Method to use GET, POST, etc.
-     */
-    private HttpClient.RequestMethod method;
-    /**
      * Unique resource locator
      */
-    private String url;
+    private String mUrl;
     /**
      * For REST like APIs
      */
@@ -24,76 +20,55 @@ class Request {
     /**
      * Parameters to the call
      * Note:
-     * - in GET {@link #method} this parameters if any are appended to the end of the URL
+     * - this parameters if any are appended to the end of the URL
      * - Parameters change a lot so please think a lot about before you re-use them
      */
     private Map<String, String> parameters;
 
     /**
-     * @param method {@link #method}
-     * @param url    {@link #url}
+     * @param url {@link #mUrl}
      */
-    Request(HttpClient.RequestMethod method, String url) {
-        setMethod(method);
+    Request(String url) {
         setUrl(url);
     }
 
     /**
-     * @param method     {@link #method}
-     * @param url        {@link #url}
+     * @param url        {@link #mUrl}
      * @param callMethod {@link #callMethodName}
      */
-    public Request(HttpClient.RequestMethod method, String url, String callMethod) {
-        this(method, url);
+    public Request(String url, String callMethod) {
+        this(url);
         setCallMethodName(callMethod);
     }
 
     /**
-     * @return {@link #method}
-     */
-    public HttpClient.RequestMethod getMethod() {
-        return method;
-    }
-
-    /**
-     * @param method the {@link #method} to set
-     *               GET by default
-     */
-    public void setMethod(HttpClient.RequestMethod method) {
-        if (method == null) {
-            method = HttpClient.RequestMethod.GET;
-        }
-        this.method = method;
-    }
-
-    /**
-     * @return {@link #url}
-     *         Note: in case of GET {@link #method} is {@link #url} plus {@link #parameters} if any
+     * @return {@link #mUrl}
      */
     public String getUrl() {
-        String realUrl = url + Utils.StringUtils.emptyIfNull(callMethodName);
-        if (HttpClient.RequestMethod.GET.equals(method)) {
-            return Utils.StringUtils.urlEncode(realUrl, parameters, true);
+        String methodName = callMethodName;
+        if (methodName == null) {
+            methodName = "";
         }
-        return realUrl;
+        String realUrl = mUrl + methodName;
+        return Utils.urlEncode(realUrl, parameters, true);
     }
 
     /**
-     * @return {@link #url}
-     *         The difference between this and {@link #getUrl()} is that doesn't append anything
+     * @return {@link #mUrl}
+     *         The difference between this and {@link #getUrl} is that doesn't append anything
      */
     public String getBaseUrl() {
-        return url;
+        return mUrl;
     }
 
     /**
-     * @param url the {@link #url} to set
+     * @param mUrl the {@link #mUrl} to set
      */
-    public void setUrl(String url) {
-        if (url == null) {
+    public void setUrl(String mUrl) {
+        if (mUrl == null) {
             throw new IllegalArgumentException("Invalid URL");
         }
-        this.url = url;
+        this.mUrl = mUrl;
     }
 
     /**
@@ -104,13 +79,6 @@ class Request {
             parameters = new HashMap<String, String>();
         }
         return parameters;
-    }
-
-    /**
-     * @param parameters the {@link #parameters} to set
-     */
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
     }
 
     /**
@@ -162,28 +130,25 @@ class Request {
     public boolean equals(Object o) {
         if (o instanceof Request) {
             Request request = (Request) o;
-            if (HttpClient.RequestMethod.GET.equals(method)) {//For GET methods only care about the full URL and method
-                return Utils.CompareUtils.areEquals(request.getMethod(), getMethod())
-                        && Utils.CompareUtils.areEquals(request.getUrl(), getUrl());
-            } else {
-                return Utils.CompareUtils.areEquals(request.getMethod(), getMethod())
-                        && Utils.CompareUtils.areEquals(request.getBaseUrl(), getBaseUrl())
-                        && Utils.CompareUtils.areMapsContentEquals(request.getParameters(), getParameters());
+            Object obj1 = request.getUrl();
+            Object obj2 = getUrl();
+            if (obj1 != null) {
+                return obj1.equals(obj2);
             }
+            return obj1 == obj2;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return (getMethod() + getUrl()).hashCode();
+        return getUrl().hashCode();
     }
 
     @Override
     public String toString() {
         return super.toString()
-                + "[ method: " + getMethod()
-                + ", fullUrl: " + getUrl()
+                + "[fullUrl: " + getUrl()
                 + ", baseUrl: " + getBaseUrl()
                 + ", parameters: " + getParameters()
                 + "]";

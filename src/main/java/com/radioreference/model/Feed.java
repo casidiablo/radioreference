@@ -144,7 +144,6 @@ public class Feed {
                 ", genre=" + genre +
                 ", mount='" + mount + '\'' +
                 ", bitRate='" + bitRate + '\'' +
-                ", counties=" + counties +
                 ", relays=" + relays +
                 '}';
     }
